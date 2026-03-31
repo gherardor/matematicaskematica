@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schema Logico: Integrali Indefiniti</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<style>
+  :root {
+    --bg: #f7f4ef;
+    --card-bg: #ffffff;
+    --text: #1a1208;
+    --muted: #6b5e4e;
+    --accent-blue: #1d4e8f;
+    --accent-blue-light: #dce8f7;
+    --accent-green: #1a6644;
+    --accent-green-light: #d6efe4;
+    --accent-orange: #b84d00;
+    --accent-orange-light: #fce9d6;
+    --accent-red: #9b1c1c;
+    --accent-red-light: #fce8e8;
+    --accent-gray: #4a5568;
+    --accent-gray-light: #edf2f7;
+    --accent-teal: #0d6e6e;
+    --accent-teal-light: #d0f0f0;
+    --accent-yellow: #7a5f00;
+    --accent-yellow-light: #fdf4cc;
+    --accent-purple: #5b2d9e;
+    --accent-purple-light: #ede8fb;
+    --radius: 14px;
+    --shadow: 0 2px 16px rgba(0,0,0,0.07);
+    --border: 1px solid rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    padding: 24px 20px 60px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* ── HEADER ── */
+  header {
+    text-align: center;
+    margin-bottom: 36px;
+    padding: 36px 24px 28px;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border-top: 5px solid var(--accent-blue);
+  }
+
+  header h1 {
+    font-family: 'Crimson Pro', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+
+  header p {
+    font-size: 0.95rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: var(--border);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    padding: 14px 20px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .card-num {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1;
+    min-width: 32px;
+  }
+
+  .card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .card-body { padding: 18px 20px; }
+
+  /* ── COLORS ── */
+  .blue   { border-left: 4px solid var(--accent-blue); }
+  .blue   .card-header { background: var(--accent-blue-light); }
+  .blue   .card-num, .blue .card-title { color: var(--accent-blue); }
+
+  .green  { border-left: 4px solid var(--accent-green); }
+  .green  .card-header { background: var(--accent-green-light); }
+  .green  .card-num, .green .card-title { color: var(--accent-green); }
+
+  .orange { border-left: 4px solid var(--accent-orange); }
+  .orange .card-header { background: var(--accent-orange-light); }
+  .orange .card-num, .orange .card-title { color: var(--accent-orange); }
+
+  .red    { border-left: 4px solid var(--accent-red); }
+  .red    .card-header { background: var(--accent-red-light); }
+  .red    .card-num, .red .card-title { color: var(--accent-red); }
+
+  .gray   { border-left: 4px solid var(--accent-gray); }
+  .gray   .card-header { background: var(--accent-gray-light); }
+  .gray   .card-num, .gray .card-title { color: var(--accent-gray); }
+
+  /* ── QA ROWS ── */
+  .qa-row {
+    background: rgba(0,0,0,0.025);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+  }
+
+  .qa-question {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+
+  .qa-ans {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-top: 4px;
+    font-size: 0.9rem;
+  }
+
+  .badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  .badge-si { background: #d6efe4; color: var(--accent-green); }
+  .badge-no { background: #fce8e8; color: var(--accent-red); }
+
+  /* ── FORMULA ── */
+  .formula {
+    background: #f0f4fa;
+    border: 1px solid #c3d4ea;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 0.9rem;
+    overflow-x: auto;
+  }
+
+  .formula-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  /* ── EXAMPLE ── */
+  .example {
+    background: #fffbf0;
+    border-left: 3px solid #e8c040;
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 0.88rem;
+    color: #4a3800;
+  }
+
+  .example-label {
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #8a6a00;
+    margin-bottom: 4px;
+  }
+
+  /* ── ALERT ── */
+  .alert {
+    background: #fff3cd;
+    border: 1px solid #f0c040;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #6b4700;
+  }
+
+  /* ── LISTS ── */
+  ol.steps { padding-left: 20px; font-size: 0.9rem; }
+  ol.steps li { margin-bottom: 8px; padding-left: 4px; }
+  ol.steps li strong { color: var(--text); }
+
+  /* ── OR DIVIDER ── */
+  .or-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 12px 0;
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--muted);
+  }
+  .or-divider::before, .or-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(0,0,0,0.1);
+  }
+
+  /* ── DELTA GRID ── */
+  .delta-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px 14px;
+    background: #f7f4ef;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-top: 10px;
+    font-size: 0.88rem;
+    align-items: start;
+  }
+
+  .delta-cond {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 0.82rem;
+    padding: 3px 8px;
+    border-radius: 5px;
+    white-space: nowrap;
+    text-align: center;
+    margin-top: 3px;
+  }
+
+  .delta-pos  { background: #d6efe4; color: var(--accent-green); }
+  .delta-zero { background: #dce8f7; color: var(--accent-blue); }
+  .delta-neg  { background: #fce8e8; color: var(--accent-red); }
+
+  /* sotto-blocco delta indentato */
+  .delta-sub {
+    border-left: 3px solid rgba(29,78,143,0.25);
+    padding-left: 12px;
+    margin-top: 2px;
+  }
+
+  .delta-sub-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px 12px;
+    align-items: start;
+    font-size: 0.88rem;
+  }
+
+  /* ── GOTO LINK CHIP ── */
+  a.goto-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 10px 3px 8px;
+    border-radius: 20px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+    white-space: nowrap;
+    vertical-align: middle;
+    margin-left: 5px;
+    /* large tap target for tablet */
+    min-height: 28px;
+  }
+  a.goto-link:active { transform: scale(0.94); opacity: 0.8; }
+  a.goto-link::before { content: '↓'; font-size: 0.9em; }
+
+  a.goto-link.teal   { background: var(--accent-teal-light);   color: var(--accent-teal);   border: 1px solid #9ad4d4; }
+  a.goto-link.blue   { background: var(--accent-blue-light);   color: var(--accent-blue);   border: 1px solid #aac8e8; }
+  a.goto-link.yellow { background: var(--accent-yellow-light); color: var(--accent-yellow); border: 1px solid #c8b840; }
+  a.goto-link.purple { background: var(--accent-purple-light); color: var(--accent-purple); border: 1px solid #b8a0e0; }
+
+  /* highlight animation on :target */
+  :target { animation: pulse-in 1.5s ease; }
+  @keyframes pulse-in {
+    0%   { box-shadow: 0 0 0 0   rgba(29,78,143,0.40); }
+    30%  { box-shadow: 0 0 0 8px rgba(29,78,143,0.18); }
+    100% { box-shadow: none; }
+  }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 36px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid rgba(0,0,0,0.08);
+  }
+
+  /* ── FOCUS CARDS ── */
+  .focus-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: var(--border);
+    margin-bottom: 20px;
+    overflow: hidden;
+    scroll-margin-top: 24px;
+  }
+
+  .focus-header {
+    padding: 12px 18px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .focus-body { padding: 18px 20px; font-size: 0.9rem; }
+
+  .teal-focus   { border-left: 4px solid var(--accent-teal); }
+  .teal-focus   .focus-header { background: var(--accent-teal-light);   color: var(--accent-teal); }
+  .blue-focus   { border-left: 4px solid var(--accent-blue); }
+  .blue-focus   .focus-header { background: var(--accent-blue-light);   color: var(--accent-blue); }
+  .yellow-focus { border-left: 4px solid #d4a900; }
+  .yellow-focus .focus-header { background: var(--accent-yellow-light); color: var(--accent-yellow); }
+  .purple-focus { border-left: 4px solid var(--accent-purple); }
+  .purple-focus .focus-header { background: var(--accent-purple-light); color: var(--accent-purple); }
+
+  /* ── RUFFINI ── */
+  .ruffini-table { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; border-collapse: collapse; margin: 12px auto; }
+  .ruffini-table td { padding: 5px 12px; text-align: right; }
+  .ruffini-table tr:last-child td { border-top: 2px solid var(--text); }
+  .ruffini-table td:first-child   { border-right: 2px solid var(--text); }
+
+  /* ── TABLES ── */
+  .integral-table-wrap { overflow-x: auto; margin: 0 -4px; }
+
+  table.int-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+
+  table.int-table th {
+    background: var(--accent-blue);
+    color: #fff;
+    padding: 10px 14px;
+    font-weight: 600;
+    text-align: left;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+  }
+
+  table.int-table th.deriv-header { background: var(--accent-teal); }
+
+  table.int-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    vertical-align: middle;
+  }
+
+  table.int-table tr:nth-child(even) td { background: #f7f4ef; }
+
+  table.int-table .group-header td {
+    background: #e8e3da;
+    font-weight: 700;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    padding: 7px 14px;
+  }
+
+  /* ── ALPET ── */
+  .alpet-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin: 14px 0;
+  }
+
+  .alpet-item {
+    text-align: center;
+    padding: 12px 6px;
+    border-radius: 10px;
+    font-weight: 700;
+  }
+
+  .alpet-item .letter {
+    font-family: 'Crimson Pro', serif;
+    font-size: 2rem;
+    line-height: 1;
+    display: block;
+  }
+
+  .alpet-item .word {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: block;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+
+  .alpet-item:nth-child(1) { background: #fce8e8; color: #9b1c1c; }
+  .alpet-item:nth-child(2) { background: #d6efe4; color: #1a6644; }
+  .alpet-item:nth-child(3) { background: #dce8f7; color: #1d4e8f; }
+  .alpet-item:nth-child(4) { background: #fce9d6; color: #b84d00; }
+  .alpet-item:nth-child(5) { background: #ede8fb; color: #5b2d9e; }
+
+  .alpet-note {
+    font-size: 0.88rem;
+    color: var(--muted);
+    font-style: italic;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  /* ── DERIVATION RULES ── */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .rule-item {
+    background: #f0f4fa;
+    border: 1px solid #c3d4ea;
+    border-radius: 8px;
+    padding: 12px 14px;
+    text-align: center;
+  }
+
+  .rule-item .rule-name {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  /* ── SUBSTITUTION STEPS ── */
+  .sub-steps { counter-reset: substep; padding: 0; list-style: none; }
+
+  .sub-steps li {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+  }
+
+  .sub-steps li::before {
+    counter-increment: substep;
+    content: counter(substep);
+    min-width: 24px;
+    height: 24px;
+    background: var(--accent-gray);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    body { padding: 16px 14px 48px; }
+    header h1 { font-size: 1.5rem; }
+    .alpet-grid { gap: 5px; }
+    .alpet-item .letter { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Schema Logico<br>Risoluzione Integrali Indefiniti</h1>
+  <p>Segui i blocchi in ordine numerico per identificare la strategia più adatta.</p>
+</header>
+
+<!-- ═══════════════ BLOCCO 1 ═══════════════ -->
+<div class="card blue">
+  <div class="card-header">
+    <span class="card-num">1</span>
+    <span class="card-title">Analisi Immediata</span>
+  </div>
+  <div class="card-body">
+    <div class="qa-row">
+      <div class="qa-question">L'integrale è presente nella tabella degli integrali immediati o notevoli?</div>
+      <div class="qa-ans"><span class="badge badge-si">SÌ</span><span>Applica la soluzione notevole dall'elenco in fondo a questo documento.</span></div>
+      <div class="qa-ans"><span class="badge badge-no">NO</span><span>Passa al blocco 2.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ BLOCCO 2 ═══════════════ -->
+<div class="card green">
+  <div class="card-header">
+    <span class="card-num">2</span>
+    <span class="card-title">Riconoscimento Strutture Derivative</span>
+  </div>
+  <div class="card-body">
+
+    <div class="qa-row">
+      <div class="qa-question">Vedi una funzione \(f(x)\) moltiplicata per la sua derivata \(f'(x)\)?</div>
+      <div class="qa-ans"><span class="badge badge-si">SÌ</span>
+        <div>
+          <div class="formula">
+            <div class="formula-label">Formula</div>
+            \(\displaystyle\int [f(x)]^n \cdot f'(x)\, dx = \frac{[f(x)]^{n+1}}{n+1} + c\)
+          </div>
+          <div class="example">
+            <div class="example-label">Esempio</div>
+            \(\displaystyle\int \sin^2(x)\cos(x)\,dx = \frac{\sin^3(x)}{3} + c\)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="or-divider">oppure</div>
+
+    <div class="qa-row">
+      <div class="qa-question">Il numeratore è (o contiene) la derivata del denominatore?</div>
+      <div class="qa-ans"><span class="badge badge-si">SÌ</span>
+        <div>
+          <div class="formula">
+            <div class="formula-label">Formula</div>
+            \(\displaystyle\int \frac{f'(x)}{f(x)}\,dx = \ln|f(x)| + c\)
+          </div>
+          <div class="example">
+            <div class="example-label">Esempio</div>
+            \(\displaystyle\int \frac{2x+1}{x^2+x+4}\,dx = \ln(x^2+x+4) + c\)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="or-divider">oppure</div>
+
+    <div class="qa-row">
+      <div class="qa-question">Manca solo una costante per completare una derivata già presente?</div>
+      <div class="qa-ans"><span class="badge badge-si">SÌ</span>
+        <div>
+          Moltiplica e dividi per la stessa costante \(k\).
+          <div class="formula">
+            <div class="formula-label">Formula</div>
+            Se \(\;k \cdot f(x) = f'(x)\;\rightarrow\;\displaystyle\int f(x)\,dx = \frac{1}{k}\int f'(x)\,dx = \frac{1}{k}\,f'(x) + c\)
+          </div>
+          <div class="example">
+            <div class="example-label">Esempio</div>
+            \(\displaystyle\int e^{2x}\,dx = \frac{1}{2}\int 2e^{2x}\,dx = \frac{1}{2}\,e^{2x} + c\)
+          </div>
+        </div>
+      </div>
+      <div class="qa-ans"><span class="badge badge-no">NO</span><span>Passa al blocco 3.</span></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════ BLOCCO 3 ═══════════════ -->
+<div class="card orange">
+  <div class="card-header">
+    <span class="card-num">3</span>
+    <span class="card-title">Funzioni Razionali Fratte</span>
+  </div>
+  <div class="card-body">
+
+    <div class="qa-row">
+      <div class="qa-question">L'integrale è un rapporto tra polinomi \(\dfrac{N(x)}{D(x)}\)?</div>
+      <div class="qa-ans"><span class="badge badge-si">SÌ</span><span>Prova a semplificare la frazione con i metodi sotto.</span></div>
+      <div class="qa-ans"><span class="badge badge-no">NO</span><span>Passa al blocco 4.</span></div>
+    </div>
+
+    <div class="alert">
+      ⚠️ Ogni volta che esegui una semplificazione, analizza il risultato ricominciando dal blocco 1!
+    </div>
+
+    <ol class="steps">
+      <li>
+        <strong>Puoi mettere in evidenza fattori comuni?</strong><br>
+        Metti in evidenza e semplifica.
+        <div class="example"><div class="example-label">Esempio</div>\(\dfrac{x^2-1}{x+1} = \dfrac{(x-1)(x+1)}{x+1} = x-1\)</div>
+      </li>
+      <li>
+        <strong>Puoi distribuire il denominatore ai termini del numeratore?</strong><br>
+        Distribuisci per semplificare.
+        <div class="example"><div class="example-label">Esempio</div>\(\dfrac{x^2+1}{x} = x + \dfrac{1}{x}\)</div>
+      </li>
+      <li>
+        <strong>Il numeratore è simile al denominatore a meno di una parte mancante?</strong><br>
+        Aggiungi e sottrai la stessa costante.
+        <div class="example"><div class="example-label">Esempio</div>\(\dfrac{x}{x+1} = \dfrac{x+1-1}{x+1} = 1 - \dfrac{1}{x+1}\)</div>
+      </li>
+      <li>
+        <strong>C'è una radice al denominatore?</strong><br>
+        Razionalizza moltiplicando per il coniugato.
+        <div class="example"><div class="example-label">Esempio</div>\(\dfrac{1}{\sqrt{x+1}-\sqrt{x}} \cdot \dfrac{\sqrt{x+1}+\sqrt{x}}{\sqrt{x+1}+\sqrt{x}} = \sqrt{x+1}+\sqrt{x}\)</div>
+      </li>
+      <li>
+        <strong>Nessuna semplificazione funziona?</strong> Guarda i gradi:
+        <div class="delta-grid">
+          <!-- riga 1: grado N >= grado D -->
+          <div class="delta-cond" style="background:#fce9d6;color:#b84d00;">\(gr(N)\geq gr(D)\)</div>
+          <div>Divisione tra polinomi <a class="goto-link teal" href="#focus-divisione">↓ Focus Divisione</a></div>
+          <!-- riga 2: grado N < grado D (header del sotto-blocco) -->
+          <div class="delta-cond" style="background:#dce8f7;color:#1d4e8f;">\(gr(N)&lt;gr(D)\)</div>
+          <div>Analizza \(\Delta=b^2-4ac\) di \(ax^2+bx+c\):</div>
+          <!-- sotto-blocco delta, indentato -->
+          <div></div><!-- cella vuota colonna sinistra -->
+          <div class="delta-sub">
+            <div class="delta-sub-grid">
+              <div class="delta-cond delta-pos">\(\Delta&gt;0\)</div>
+              <div>Fratti semplici \(\dfrac{A}{x-x_1}+\dfrac{B}{x-x_2}\) <a class="goto-link blue" href="#focus-fratti-pos">↓ Focus &Delta;&gt;0</a></div>
+              <div class="delta-cond delta-zero">\(\Delta=0\)</div>
+              <div>Fratti semplici \(\dfrac{A}{x-x_1}+\dfrac{B}{(x-x_1)^2}\) <a class="goto-link blue" href="#focus-fratti-zero">↓ Focus &Delta;=0</a></div>
+              <div class="delta-cond delta-neg">\(\Delta&lt;0\)</div>
+              <div>Completamento del quadrato <a class="goto-link yellow" href="#focus-quadrato">↓ Focus &Delta;&lt;0</a></div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ol>
+
+  </div>
+</div>
+
+<!-- ═══════════════ BLOCCO 4 ═══════════════ -->
+<div class="card red">
+  <div class="card-header">
+    <span class="card-num">4</span>
+    <span class="card-title">Integrazione per Parti</span>
+  </div>
+  <div class="card-body">
+    <div class="qa-row">
+      <div class="qa-question">C'è un prodotto tra funzioni di natura diversa (es. \(x \cdot e^x\))?</div>
+      <div class="qa-ans"><span class="badge badge-si">SÌ</span>
+        <div>
+          <div class="formula">
+            <div class="formula-label">Formula</div>
+            \(\displaystyle\int f(x)g'(x)\,dx = f(x)g(x) - \int f'(x)g(x)\,dx\)
+          </div>
+          Usa il metodo ALPET per scegliere \(f(x)\). <a class="goto-link teal" href="#focus-alpet">↓ Focus ALPET</a>
+        </div>
+      </div>
+      <div class="qa-ans"><span class="badge badge-no">NO</span><span>Passa al blocco 5.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ BLOCCO 5 ═══════════════ -->
+<div class="card gray">
+  <div class="card-header">
+    <span class="card-num">5</span>
+    <span class="card-title">Integrazione per Sostituzione</span>
+  </div>
+  <div class="card-body">
+    <div class="qa-row">
+      <div class="qa-question">Puoi semplificare l'integrale con un cambio di variabile?</div>
+      <div class="qa-ans"><span class="badge badge-si">SÌ</span><span>Poni \(t = g(x)\), calcola \(dt = g'(x)\,dx\) e sostituisci tutto.</span></div>
+    </div>
+
+    <div class="example" style="margin-top:12px;">
+      <div class="example-label">Esempio — \(\displaystyle\int \frac{1}{1+\sqrt{x}}\,dx\)</div>
+    </div>
+    <ul class="sub-steps" style="margin-top:10px;">
+      <li><strong>Scegli la sostituzione:</strong> Poni \(t = \sqrt{x}\).</li>
+      <li><strong>Ricava la \(x\):</strong> \(x = t^2\).</li>
+      <li><strong>Calcola il differenziale:</strong> \(\dfrac{dx}{dt} = 2t \;\Rightarrow\; dx = 2t\,dt\)</li>
+      <li><strong>Sostituisci:</strong> \(\displaystyle\int \frac{1}{1+t}\cdot 2t\,dt = 2\int\frac{t}{1+t}\,dt\)</li>
+      <li><strong>Risolvi con il trucco \(+1-1\):</strong>
+        \[2\int\frac{t+1-1}{1+t}\,dt = 2\!\left(\int 1\,dt - \int\frac{1}{1+t}\,dt\right) = 2t - 2\ln|1+t|+c\]
+      </li>
+      <li><strong>Torna in \(x\):</strong> \(2\sqrt{x} - 2\ln(1+\sqrt{x})+c\)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════ FOCUS: DIVISIONE ═══════════════ -->
+<div class="section-title">Focus: Divisione tra Polinomi</div>
+
+<div id="focus-divisione" class="focus-card teal-focus">
+  <div class="focus-header">📐 Divisione tra Polinomi — \(\dfrac{N(x)}{D(x)} = Q(x) + \dfrac{R(x)}{D(x)}\)</div>
+  <div class="focus-body">
+    <ol class="steps">
+      <li>Dividi il termine di grado più alto del numeratore per quello del denominatore.</li>
+      <li>Moltiplica il risultato per tutto il denominatore.</li>
+      <li>Sottrai dal numeratore.</li>
+      <li>Ripeti finché il grado del resto è minore del grado del denominatore.</li>
+    </ol>
+    <div class="example" style="margin-top:12px;">
+      <div class="example-label">Esempio — \(\dfrac{x^2+3x+1}{x+1}\)</div>
+      <ol class="steps" style="margin-top:8px;">
+        <li>\(x^2 \div x = x\) &nbsp;→&nbsp; \(x(x+1) = x^2+x\) &nbsp;→&nbsp; resto: \(2x+1\)</li>
+        <li>\(2x \div x = 2\) &nbsp;→&nbsp; \(2(x+1) = 2x+2\) &nbsp;→&nbsp; resto: \(-1\)</li>
+      </ol>
+      <div class="formula" style="margin-top:8px;">\(\dfrac{x^2+3x+1}{x+1} = x+2-\dfrac{1}{x+1}\)</div>
+    </div>
+  </div>
+</div>
+
+<div id="focus-ruffini" class="focus-card purple-focus">
+  <div class="focus-header">⚡ Caso Particolare: Regola di Ruffini</div>
+  <div class="focus-body">
+    Se il denominatore è del tipo \((x-a)\), usa Ruffini per eseguire la divisione più velocemente.
+    <ol class="steps" style="margin-top:10px;">
+      <li>Scrivi i coefficienti del polinomio.</li>
+      <li>Usa il valore \(a\) nella tabella.</li>
+      <li>Esegui i passaggi di moltiplicazione e somma.</li>
+    </ol>
+    <div class="example" style="margin-top:10px;">
+      <div class="example-label">Esempio — \(\dfrac{x^3-2x^2-x+2}{x-1}\)</div>
+      <table class="ruffini-table" style="margin:12px auto;">
+        <tr><td></td><td>1</td><td>−2</td><td>−1</td><td>2</td></tr>
+        <tr><td>1</td><td></td><td>1</td><td>−1</td><td>−2</td></tr>
+        <tr><td></td><td>1</td><td>−1</td><td>−2</td><td>0</td></tr>
+      </table>
+      <div class="formula">\(\dfrac{x^3-2x^2-x+2}{x-1} = x^2-x-2\)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ FOCUS: FRATTI ═══════════════ -->
+<div class="section-title">Focus: Metodo dei Fratti Semplici (\(\Delta \geq 0\))</div>
+
+<div id="focus-fratti-pos" class="focus-card blue-focus">
+  <div class="focus-header">Caso \(\Delta &gt; 0\) — Radici Reali Distinte</div>
+  <div class="focus-body">
+    <div class="example"><div class="example-label">Problema</div>\(\displaystyle\int\frac{3x+1}{x^2-5x+6}\,dx\)</div>
+    <ol class="steps" style="margin-top:10px;">
+      <li><strong>Scomponi il denominatore:</strong> \(x^2-5x+6=(x-2)(x-3)\)</li>
+      <li><strong>Imposta l'identità:</strong> \(\dfrac{3x+1}{(x-2)(x-3)} = \dfrac{A}{x-2}+\dfrac{B}{x-3}\)</li>
+      <li><strong>M.C.M. e identifica i coefficienti:</strong> \(3x+1 = (A+B)x-(3A+2B)\)</li>
+      <li><strong>Sistema (Principio d'Identità):</strong>
+        \[\begin{cases}A+B=3\\3A+2B=-1\end{cases}\Rightarrow A=-7,\;B=10\]
+      </li>
+      <li><strong>Integra:</strong>
+        <div class="formula">\(\displaystyle\int\!\left(\frac{-7}{x-2}+\frac{10}{x-3}\right)dx = -7\ln|x-2|+10\ln|x-3|+c\)</div>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<div id="focus-fratti-zero" class="focus-card blue-focus">
+  <div class="focus-header">Caso \(\Delta = 0\) — Radice Reale Doppia</div>
+  <div class="focus-body">
+    <div class="example"><div class="example-label">Problema</div>\(\displaystyle\int\frac{x-2}{x^2+4x+4}\,dx\)</div>
+    <ol class="steps" style="margin-top:10px;">
+      <li><strong>Scomponi:</strong> \(x^2+4x+4=(x+2)^2\)</li>
+      <li><strong>Imposta:</strong> \(\dfrac{x-2}{(x+2)^2} = \dfrac{A}{x+2}+\dfrac{B}{(x+2)^2}\)</li>
+      <li><strong>M.C.M.:</strong> \(x-2 = Ax+(2A+B)\)</li>
+      <li><strong>Sistema:</strong>
+        \[\begin{cases}A=1\\2A+B=-2\end{cases}\Rightarrow A=1,\;B=-4\]
+      </li>
+      <li><strong>Integra:</strong>
+        <div class="formula">\(\displaystyle\int\!\left(\frac{1}{x+2}+\frac{-4}{(x+2)^2}\right)dx\)</div>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<!-- ═══════════════ FOCUS: COMPLETAMENTO ═══════════════ -->
+<div class="section-title">Focus: Completamento del Quadrato (\(\Delta &lt; 0\))</div>
+
+<div id="focus-quadrato" class="focus-card yellow-focus">
+  <div class="focus-header">🔲 Procedura Passo-Passo</div>
+  <div class="focus-body">
+    <p style="margin-bottom:10px;">Obiettivo: trasformare \(ax^2+bx+c\) in \((x+p)^2+q^2\) per ottenere un'<strong>arcotangente</strong>.</p>
+    <div class="example"><div class="example-label">Esempio</div>\(D(x) = x^2+4x+13\)</div>
+    <ol class="steps" style="margin-top:10px;">
+      <li>Prendi il termine con la \(x\): \(4x\).</li>
+      <li>Trova la metà del coefficiente: \(\dfrac{4}{2}=2\).</li>
+      <li>Crea il quadrato del binomio: \((x+2)^2\).</li>
+      <li>Sviluppa mentalmente: \((x+2)^2 = x^2+4x+4\).</li>
+      <li>Regola la costante: abbiamo \(+13\), il quadrato dà \(+4\), quindi aggiungiamo \(9\).</li>
+      <li><strong>Risultato:</strong> \(x^2+4x+13=(x+2)^2+9\)</li>
+    </ol>
+    <div class="formula" style="margin-top:12px;">
+      \(\displaystyle\int\frac{1}{(x+2)^2+3^2}\,dx = \frac{1}{3}\arctan\!\left(\frac{x+2}{3}\right)+c\)
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ FOCUS: ALPET ═══════════════ -->
+<div class="section-title">Focus: Regola ALPET (Integrazione per Parti)</div>
+
+<div id="focus-alpet" class="focus-card teal-focus">
+  <div class="focus-header">🧭 Scegli \(f(x)\) da derivare seguendo quest'ordine</div>
+  <div class="focus-body">
+    <div class="alpet-grid">
+      <div class="alpet-item"><span class="letter">A</span><span class="word">Arcofunzioni</span></div>
+      <div class="alpet-item"><span class="letter">L</span><span class="word">Logaritmi</span></div>
+      <div class="alpet-item"><span class="letter">P</span><span class="word">Polinomi</span></div>
+      <div class="alpet-item"><span class="letter">E</span><span class="word">Esponenziali</span></div>
+      <div class="alpet-item"><span class="letter">T</span><span class="word">Trigon.</span></div>
+    </div>
+    <p class="alpet-note">Chi viene prima in ALPET è la funzione da scegliere come \(f(x)\) da derivare.</p>
+  </div>
+</div>
+
+<!-- ═══════════════ TABELLA INTEGRALI ═══════════════ -->
+<div class="section-title">Tabella degli Integrali Notevoli</div>
+
+<div class="card" style="border:none;padding:0;background:transparent;box-shadow:none;">
+  <div class="integral-table-wrap">
+    <table class="int-table">
+      <thead>
+        <tr><th>Funzione integranda \(f(x)\)</th><th>Integrale \(\int f(x)\,dx\)</th></tr>
+      </thead>
+      <tbody>
+        <tr class="group-header"><td colspan="2">Potenze e Funzioni Razionali</td></tr>
+        <tr><td>\(k\) (costante)</td><td>\(kx+c\)</td></tr>
+        <tr><td>\(x^n\quad(n\neq -1)\)</td><td>\(\dfrac{x^{n+1}}{n+1}+c\)</td></tr>
+        <tr><td>\(\dfrac{1}{x}\)</td><td>\(\ln|x|+c\)</td></tr>
+        <tr><td>\(\dfrac{1}{ax+b}\)</td><td>\(\dfrac{1}{a}\ln|ax+b|+c\)</td></tr>
+        <tr class="group-header"><td colspan="2">Funzioni Esponenziali</td></tr>
+        <tr><td>\(e^x\)</td><td>\(e^x+c\)</td></tr>
+        <tr><td>\(a^x\)</td><td>\(\dfrac{a^x}{\ln a}+c\)</td></tr>
+        <tr class="group-header"><td colspan="2">Funzioni Goniometriche</td></tr>
+        <tr><td>\(\sin x\)</td><td>\(-\cos x+c\)</td></tr>
+        <tr><td>\(\cos x\)</td><td>\(\sin x+c\)</td></tr>
+        <tr><td>\(\tan x\)</td><td>\(-\ln|\cos x|+c\)</td></tr>
+        <tr><td>\(\dfrac{1}{\cos^2 x}=1+\tan^2 x\)</td><td>\(\tan x+c\)</td></tr>
+        <tr><td>\(\dfrac{1}{\sin^2 x}=1+\cot^2 x\)</td><td>\(-\cot x+c\)</td></tr>
+        <tr class="group-header"><td colspan="2">Funzioni con Inverse Circolari</td></tr>
+        <tr><td>\(\dfrac{1}{\sqrt{1-x^2}}\)</td><td>\(\arcsin x+c\)</td></tr>
+        <tr><td>\(\dfrac{1}{1+x^2}\)</td><td>\(\arctan x+c\)</td></tr>
+        <tr><td>\(\dfrac{1}{a^2+x^2}\)</td><td>\(\dfrac{1}{a}\arctan\!\left(\dfrac{x}{a}\right)+c\)</td></tr>
+        <tr><td>\(\dfrac{1}{\sqrt{a^2-x^2}}\)</td><td>\(\arcsin\!\left(\dfrac{x}{a}\right)+c\)</td></tr>
+        <tr class="group-header"><td colspan="2">Forme Composte Comuni</td></tr>
+        <tr><td>\(\dfrac{f'(x)}{f(x)}\)</td><td>\(\ln|f(x)|+c\)</td></tr>
+        <tr><td>\([f(x)]^n\cdot f'(x)\)</td><td>\(\dfrac{[f(x)]^{n+1}}{n+1}+c\)</td></tr>
+        <tr><td>\(e^{f(x)}\cdot f'(x)\)</td><td>\(e^{f(x)}+c\)</td></tr>
+        <tr class="group-header"><td colspan="2">Funzioni Iperboliche Dirette</td></tr>
+        <tr><td>\(\sinh x\)</td><td>\(\cosh x+c\)</td></tr>
+        <tr><td>\(\cosh x\)</td><td>\(\sinh x+c\)</td></tr>
+        <tr><td>\(\dfrac{1}{\cosh^2 x}\)</td><td>\(\tanh x+c\)</td></tr>
+        <tr><td>\(\dfrac{1}{\sinh^2 x}\)</td><td>\(-\coth x+c\)</td></tr>
+        <tr class="group-header"><td colspan="2">Funzioni con Settore Iperbolico (Radici)</td></tr>
+        <tr><td>\(\dfrac{1}{\sqrt{x^2+1}}\)</td><td>\(\ln(x+\sqrt{x^2+1})+c\)</td></tr>
+        <tr><td>\(\dfrac{1}{\sqrt{x^2-1}}\)</td><td>\(\ln|x+\sqrt{x^2-1}|+c\)</td></tr>
+        <tr><td>\(\dfrac{1}{\sqrt{x^2+a^2}}\)</td><td>\(\ln(x+\sqrt{x^2+a^2})+c\)</td></tr>
+        <tr><td>\(\dfrac{1}{\sqrt{x^2-a^2}}\)</td><td>\(\ln|x+\sqrt{x^2-a^2}|+c\)</td></tr>
+        <tr class="group-header"><td colspan="2">Forme con Logaritmi Speciali</td></tr>
+        <tr><td>\(\dfrac{1}{a^2-x^2}\)</td><td>\(\dfrac{1}{2a}\ln\left|\dfrac{a+x}{a-x}\right|+c\)</td></tr>
+        <tr><td>\(\sqrt{a^2-x^2}\)</td><td>\(\dfrac{1}{2}\!\left(x\sqrt{a^2-x^2}+a^2\arcsin\dfrac{x}{a}\right)+c\)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════ TABELLA DERIVATE ═══════════════ -->
+<div class="section-title">Tabella delle Derivate Notevoli</div>
+
+<div class="card" style="border:none;padding:0;background:transparent;box-shadow:none;">
+  <div class="integral-table-wrap">
+    <table class="int-table">
+      <thead>
+        <tr><th class="deriv-header">Funzione \(f(x)\)</th><th class="deriv-header">Derivata \(f'(x)\)</th></tr>
+      </thead>
+      <tbody>
+        <tr class="group-header"><td colspan="2">Funzioni Elementari e Potenze</td></tr>
+        <tr><td>\(k\) (costante)</td><td>\(0\)</td></tr>
+        <tr><td>\(x^n\)</td><td>\(n\cdot x^{n-1}\)</td></tr>
+        <tr><td>\(\sqrt{x}\)</td><td>\(\dfrac{1}{2\sqrt{x}}\)</td></tr>
+        <tr><td>\(\dfrac{1}{x}\)</td><td>\(-\dfrac{1}{x^2}\)</td></tr>
+        <tr><td>\(\ln|x|\)</td><td>\(\dfrac{1}{x}\)</td></tr>
+        <tr><td>\(\log_a x\)</td><td>\(\dfrac{1}{x\ln a}\)</td></tr>
+        <tr class="group-header"><td colspan="2">Funzioni Esponenziali</td></tr>
+        <tr><td>\(e^x\)</td><td>\(e^x\)</td></tr>
+        <tr><td>\(a^x\)</td><td>\(a^x\ln a\)</td></tr>
+        <tr class="group-header"><td colspan="2">Funzioni Goniometriche</td></tr>
+        <tr><td>\(\sin x\)</td><td>\(\cos x\)</td></tr>
+        <tr><td>\(\cos x\)</td><td>\(-\sin x\)</td></tr>
+        <tr><td>\(\tan x\)</td><td>\(\dfrac{1}{\cos^2 x}=1+\tan^2 x\)</td></tr>
+        <tr><td>\(\cot x\)</td><td>\(-\dfrac{1}{\sin^2 x}=-(1+\cot^2 x)\)</td></tr>
+        <tr class="group-header"><td colspan="2">Funzioni Circolari Inverse</td></tr>
+        <tr><td>\(\arcsin x\)</td><td>\(\dfrac{1}{\sqrt{1-x^2}}\)</td></tr>
+        <tr><td>\(\arccos x\)</td><td>\(-\dfrac{1}{\sqrt{1-x^2}}\)</td></tr>
+        <tr><td>\(\arctan x\)</td><td>\(\dfrac{1}{1+x^2}\)</td></tr>
+        <tr class="group-header"><td colspan="2">Funzioni Iperboliche</td></tr>
+        <tr><td>\(\sinh x\)</td><td>\(\cosh x\)</td></tr>
+        <tr><td>\(\cosh x\)</td><td>\(\sinh x\)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════ REGOLE DI DERIVAZIONE ═══════════════ -->
+<div class="section-title">Regole di Derivazione Rapide</div>
+
+<div class="rules-grid">
+  <div class="rule-item">
+    <div class="rule-name">Prodotto</div>
+    \(D[f\cdot g] = f'g + fg'\)
+  </div>
+  <div class="rule-item">
+    <div class="rule-name">Quoziente</div>
+    \(D\!\left[\dfrac{f}{g}\right] = \dfrac{f'g - fg'}{g^2}\)
+  </div>
+  <div class="rule-item">
+    <div class="rule-name">Funzione Composta</div>
+    \(D[f(g(x))] = f'(g(x))\cdot g'(x)\)
+  </div>
+</div>
+
+</body>
+</html>
