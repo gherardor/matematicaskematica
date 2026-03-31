@@ -299,7 +299,7 @@
     min-height: 28px;
   }
   a.goto-link:active { transform: scale(0.94); opacity: 0.8; }
-  a.goto-link::before { content: '↓'; font-size: 0.9em; }
+  a.goto-link::before { content: ''; font-size: 0.9em; }
 
   a.goto-link.teal   { background: var(--accent-teal-light);   color: var(--accent-teal);   border: 1px solid #9ad4d4; }
   a.goto-link.blue   { background: var(--accent-blue-light);   color: var(--accent-blue);   border: 1px solid #aac8e8; }
@@ -518,7 +518,9 @@
   </div>
   <div class="card-body">
     <div class="qa-row">
-      <div class="qa-question">L'integrale è presente nella tabella degli integrali immediati o notevoli?</div>
+      <div class="qa-question">L'integrale è presente nella tabella degli integrali immediati o notevoli?
+        <a class="goto-link teal" href="#tabella_integrali">↓ Vai alla tabella</a>
+      </div>
       <div class="qa-ans"><span class="badge badge-si">SÌ</span><span>Applica la soluzione notevole dall'elenco in fondo a questo documento.</span></div>
       <div class="qa-ans"><span class="badge badge-no">NO</span><span>Passa al blocco 2.</span></div>
     </div>
@@ -712,7 +714,7 @@
 <div class="section-title">Focus: Divisione tra Polinomi</div>
 
 <div id="focus-divisione" class="focus-card teal-focus">
-  <div class="focus-header">📐 Divisione tra Polinomi — \(\dfrac{N(x)}{D(x)} = Q(x) + \dfrac{R(x)}{D(x)}\)</div>
+  <div class="focus-header">📐 Divisione tra Polinomi — \(\dfrac{N(x)}{D(x)} = Q(x) + \dfrac{R(x)}{D(x)}\)  <a class="goto-link teal" href="#blocco_3">↑ Torna ai blocchi</a></div>
   <div class="focus-body">
     <ol class="steps">
       <li>Dividi il termine di grado più alto del numeratore per quello del denominatore.</li>
@@ -726,13 +728,13 @@
         <li>\(x^2 \div x = x\) &nbsp;→&nbsp; \(x(x+1) = x^2+x\) &nbsp;→&nbsp; resto: \(2x+1\)</li>
         <li>\(2x \div x = 2\) &nbsp;→&nbsp; \(2(x+1) = 2x+2\) &nbsp;→&nbsp; resto: \(-1\)</li>
       </ol>
-      <div class="formula" style="margin-top:8px;">\(\dfrac{x^2+3x+1}{x+1} = x+2-\dfrac{1}{x+1}\) <a class="goto-link teal" href="#blocco_3">U+2191 Torna ai blocchi</a></div>
+      <div class="formula" style="margin-top:8px;">\(\dfrac{x^2+3x+1}{x+1} = x+2-\dfrac{1}{x+1}\)</div>
     </div>
   </div>
 </div>
 
 <div id="focus-ruffini" class="focus-card purple-focus">
-  <div class="focus-header">⚡ Caso Particolare: Regola di Ruffini</div>
+  <div class="focus-header">⚡ Caso Particolare: Regola di Ruffini  <a class="goto-link teal" href="#blocco_3"></a></div>
   <div class="focus-body">
     Se il denominatore è del tipo \((x-a)\), usa Ruffini per eseguire la divisione più velocemente.
     <ol class="steps" style="margin-top:10px;">
@@ -747,7 +749,7 @@
         <tr><td>1</td><td></td><td>1</td><td>−1</td><td>−2</td></tr>
         <tr><td></td><td>1</td><td>−1</td><td>−2</td><td>0</td></tr>
       </table>
-      <div class="formula">\(\dfrac{x^3-2x^2-x+2}{x-1} = x^2-x-2\) <a class="goto-link teal" href="#blocco_3">U+2191 Torna ai blocchi</a></div>
+      <div class="formula">\(\dfrac{x^3-2x^2-x+2}{x-1} = x^2-x-2\)↑ Torna ai blocchi</a></div>
     </div>
   </div>
 </div>
@@ -756,7 +758,7 @@
 <div class="section-title">Focus: Metodo dei Fratti Semplici (\(\Delta \geq 0\))</div>
 
 <div id="focus-fratti-pos" class="focus-card blue-focus">
-  <div class="focus-header">Caso \(\Delta &gt; 0\) — Radici Reali Distinte</div>
+  <div class="focus-header">Caso \(\Delta &gt; 0\) — Radici Reali Distinte <a class="goto-link teal" href="#blocco_3">↑ Torna ai blocchi</a></div>
   <div class="focus-body">
     <div class="example"><div class="example-label">Problema</div>\(\displaystyle\int\frac{3x+1}{x^2-5x+6}\,dx\)</div>
     <ol class="steps" style="margin-top:10px;">
@@ -767,14 +769,14 @@
         \[\begin{cases}A+B=3\\3A+2B=-1\end{cases}\Rightarrow A=-7,\;B=10\]
       </li>
       <li><strong>Integra:</strong>
-        <div class="formula">\(\displaystyle\int\!\left(\frac{-7}{x-2}+\frac{10}{x-3}\right)dx = -7\ln|x-2|+10\ln|x-3|+c\) <a class="goto-link teal" href="#blocco_3">U+2191 Torna ai blocchi</a></div>
+        <div class="formula">\(\displaystyle\int\!\left(\frac{-7}{x-2}+\frac{10}{x-3}\right)dx = -7\ln|x-2|+10\ln|x-3|+c\) </div>
       </li>
     </ol>
   </div>
 </div>
 
 <div id="focus-fratti-zero" class="focus-card blue-focus">
-  <div class="focus-header">Caso \(\Delta = 0\) — Radice Reale Doppia</div>
+  <div class="focus-header">Caso \(\Delta = 0\) — Radice Reale Doppia <a class="goto-link teal" href="#blocco_3">↑ Torna ai blocchi</a></div>
   <div class="focus-body">
     <div class="example"><div class="example-label">Problema</div>\(\displaystyle\int\frac{x-2}{x^2+4x+4}\,dx\)</div>
     <ol class="steps" style="margin-top:10px;">
@@ -785,7 +787,7 @@
         \[\begin{cases}A=1\\2A+B=-2\end{cases}\Rightarrow A=1,\;B=-4\]
       </li>
       <li><strong>Integra:</strong>
-        <div class="formula">\(\displaystyle\int\!\left(\frac{1}{x+2}+\frac{-4}{(x+2)^2}\right)dx\) <a class="goto-link teal" href="#blocco_3">U+2191 Torna ai blocchi</a></div>
+        <div class="formula">\(\displaystyle\int\!\left(\frac{1}{x+2}+\frac{-4}{(x+2)^2}\right)dx\)</div>
       </li>
     </ol>
   </div>
@@ -795,7 +797,7 @@
 <div class="section-title">Focus: Completamento del Quadrato (\(\Delta &lt; 0\))</div>
 
 <div id="focus-quadrato" class="focus-card yellow-focus">
-  <div class="focus-header">🔲 Procedura Passo-Passo</div>
+  <div class="focus-header">🔲 Procedura Passo-Passo <a class="goto-link teal" href="#blocco_3">↑ Torna ai blocchi</a></div>
   <div class="focus-body">
     <p style="margin-bottom:10px;">Obiettivo: trasformare \(ax^2+bx+c\) in \((x+p)^2+q^2\) per ottenere un'<strong>arcotangente</strong>.</p>
     <div class="example"><div class="example-label">Esempio</div>\(D(x) = x^2+4x+13\)</div>
@@ -809,7 +811,6 @@
     </ol>
     <div class="formula" style="margin-top:12px;">
       \(\displaystyle\int\frac{1}{(x+2)^2+3^2}\,dx = \frac{1}{3}\arctan\!\left(\frac{x+2}{3}\right)+c\)
-      <a class="goto-link teal" href="#blocco_3">U+2191 Torna ai blocchi</a>
     </div>
   </div>
 </div>
@@ -818,7 +819,7 @@
 <div class="section-title">Focus: Regola ALPET (Integrazione per Parti)</div>
 
 <div id="focus-alpet" class="focus-card teal-focus">
-  <div class="focus-header">🧭 Scegli \(f(x)\) da derivare seguendo quest'ordine</div>
+  <div class="focus-header">🧭 Scegli \(f(x)\) da derivare seguendo quest'ordine  <a class="goto-link teal" href="#blocco_5">↑ Torna ai blocchi</a></div>
   <div class="focus-body">
     <div class="alpet-grid">
       <div class="alpet-item"><span class="letter">A</span><span class="word">Arcofunzioni</span></div>
@@ -827,12 +828,14 @@
       <div class="alpet-item"><span class="letter">E</span><span class="word">Esponenziali</span></div>
       <div class="alpet-item"><span class="letter">T</span><span class="word">Trigon.</span></div>
     </div>
-    <p class="alpet-note">Chi viene prima in ALPET è la funzione da scegliere come \(f(x)\) da derivare. <a class="goto-link teal" href="#blocco_5">U+2191 Torna ai blocchi</a></p>
+    <p class="alpet-note">Chi viene prima in ALPET è la funzione da scegliere come \(f(x)\) da derivare.</p> 
   </div>
 </div>
 
 <!-- ═══════════════ TABELLA INTEGRALI ═══════════════ -->
-<div class="section-title">Tabella degli Integrali Notevoli</div>
+<div id="tabella_integrali" class="section-title">Tabella degli Integrali Notevoli
+  <a class="goto-link teal" href="#blocco_1">↑ Torna ai blocchi</a>
+</div>
 
 <div class="card" style="border:none;padding:0;background:transparent;box-shadow:none;">
   <div class="integral-table-wrap">
@@ -883,7 +886,9 @@
 </div>
 
 <!-- ═══════════════ TABELLA DERIVATE ═══════════════ -->
-<div class="section-title">Tabella delle Derivate Notevoli</div>
+<div class="section-title">Tabella delle Derivate Notevoli
+  <a class="goto-link teal" href="#blocco_1">↑ Torna ai blocchi</a>
+</div>
 
 <div class="card" style="border:none;padding:0;background:transparent;box-shadow:none;">
   <div class="integral-table-wrap">
@@ -920,7 +925,9 @@
 </div>
 
 <!-- ═══════════════ REGOLE DI DERIVAZIONE ═══════════════ -->
-<div class="section-title">Regole di Derivazione Rapide</div>
+<div class="section-title">Regole di Derivazione Rapide
+  <a class="goto-link teal" href="#blocco_1">↑ Torna ai blocchi</a>
+</div>
 
 <div class="rules-grid">
   <div class="rule-item">
